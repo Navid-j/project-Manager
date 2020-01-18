@@ -12,10 +12,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:centre_button_icon="@drawable/ic_action_new"
-        app:active_centre_button_icon_color="#FF4081"
         app:active_centre_button_background_color="#ff00f0"
-        app:inactive_centre_button_icon_color="#C90000"
-        app:centre_button_color="#FFFFFF" />
+        app:active_centre_button_icon_color="#FF4081"
+        app:centre_button_color="#FFFFFF"
+        app:centre_button_icon="@drawable/ic_action_new"
+        app:inactive_centre_button_icon_color="#F816EE" />
 
 </RelativeLayout>

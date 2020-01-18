@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,23 +12,18 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.example.projectmanager.R;
 import com.example.projectmanager.Utils.Projects;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     ImageView backIcon;
     int w, h;
+    ArrayList<Projects> projectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +61,21 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse: " + response);
-                        if (response != null) {
-                            Gson gson = new Gson();
-                            Type type = new TypeToken<Projects>() {
+                        try {
+                            JSONArray fullProjects = response.getJSONArray("projects");
+                            JSONObject project;
+                            for (int i = 0; i < fullProjects.length(); i++) {
+                                project = fullProjects.getJSONObject(i);
+                                Log.d(TAG, "onResponsex: " + project);
+                                projectList.add(new Projects(project.getInt("id")
+                                        , project.getString("projectName")
+                                        , project.getString("projectIntro")
+                                        , project.getString("producerId")));
+                                Log.d(TAG, "onResponse: " + projectList.get(i).getProjectName());
+                            }
 
-                            }.getType();
-                            Projects projects = gson.fromJson(response.toString(), type);
-                            Log.d(TAG, "onResponse2: " + projects);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
 
