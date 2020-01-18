@@ -5,12 +5,14 @@ public class Projects {
     private String projectName;
     private String projectIntro;
     private String producerId;
+    private String date;
 
-    public Projects(int Id, String projectName, String projectIntro, String producerId) {
+    public Projects(int Id, String projectName, String projectIntro, String producerId, String date) {
         this.projectName = projectName;
         this.projectIntro = projectIntro;
         this.id = Id;
         this.producerId = producerId;
+        this.date = date;
     }
 
     public String getProjectIntro() {
@@ -43,5 +45,13 @@ public class Projects {
 
     public void setProducerId(String producerId) {
         this.producerId = producerId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

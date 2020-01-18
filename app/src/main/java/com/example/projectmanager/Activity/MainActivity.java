@@ -1,6 +1,8 @@
 package com.example.projectmanager.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.projectmanager.Adapter.HomeRvAdapter;
 import com.example.projectmanager.R;
 import com.example.projectmanager.Utils.Projects;
 import com.luseen.spacenavigation.SpaceItem;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     ImageView backIcon;
     int w, h;
+    RecyclerView homeRV;
     ArrayList<Projects> projectList = new ArrayList<>();
 
     @Override
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         h = getWindowManager().getDefaultDisplay().getHeight();
 
         backIcon = findViewById(R.id.backgrand_icon);
+        homeRV = findViewById(R.id.home_rv);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
@@ -49,9 +54,17 @@ public class MainActivity extends AppCompatActivity {
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
 //        spaceNavigationView.showBadgeAtIndex(2, 5, getResources().getColor(R.color.badge_background_color));
 
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         backIcon.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(w, h);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.ABOVE, R.id.space);
+        params.setMargins(w / 22, h / 25, w / 22, 0);
+        homeRV.setLayoutParams(params);
+
+        homeRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
 
         AndroidNetworking.get("http://192.168.43.109/mitra/GetData.php")
                 .setTag(this)
@@ -70,13 +83,16 @@ public class MainActivity extends AppCompatActivity {
                                 projectList.add(new Projects(project.getInt("id")
                                         , project.getString("projectName")
                                         , project.getString("projectIntro")
-                                        , project.getString("producerId")));
+                                        , project.getString("producerId")
+                                        , project.getString("date")));
                                 Log.d(TAG, "onResponse: " + projectList.get(i).getProjectName());
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        homeRV.setAdapter(new HomeRvAdapter(projectList));
+
                     }
 
                     @Override

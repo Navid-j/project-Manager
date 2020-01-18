@@ -14,6 +14,11 @@
         android:layout_centerInParent="true"
         android:src="@drawable/project_back_icon" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.luseen.spacenavigation.SpaceNavigationView
         android:id="@+id/space"
         android:layout_width="match_parent"
@@ -25,17 +30,5 @@
         app:centre_button_color="#FFFFFF"
         app:centre_button_icon="@drawable/ic_action_new"
         app:inactive_centre_button_icon_color="#C90000" />
-
-    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-    <!--        android:id="@+id/bottom_navigation"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        app:itemBackground="@color/colorPrimary"-->
-    <!--        app:itemIconTint="@android:color/white"-->
-    <!--        app:itemTextColor="@android:color/white"-->
-    <!--        app:menu="@menu/bottom_nav_menu"-->
-    <!--        app:itemHorizontalTranslationEnabled="true"/>-->
-
 
 </RelativeLayout>
