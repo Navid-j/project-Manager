@@ -1,5 +1,7 @@
 package com.example.projectmanager.Adapter;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,13 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvView
     private ArrayList<Projects> mProjects;
 
 
-    public class HomeRvViewHolder extends RecyclerView.ViewHolder {
-        public TextView pName;
-        public TextView pProducer;
-        public TextView pDate;
-        public CardView cardView;
+    class HomeRvViewHolder extends RecyclerView.ViewHolder {
+        TextView pName;
+        TextView pProducer;
+        TextView pDate;
+        CardView cardView;
+        int w, h;
+        Context context;
 
         public HomeRvViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -32,9 +36,17 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvView
             pProducer = itemView.findViewById(R.id.tv_project_producer_name);
             pDate = itemView.findViewById(R.id.tv_project_date);
             cardView = itemView.findViewById(R.id.cardview_home);
+            DisplayMetrics displayMetrics = itemView.getContext().getResources().getDisplayMetrics();
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            w = displayMetrics.widthPixels;
+            h = displayMetrics.heightPixels;
 
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    h / 6);
+            cardView.setLayoutParams(params);
+
+//            RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(w,h);
 
         }
     }

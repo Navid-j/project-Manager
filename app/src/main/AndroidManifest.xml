@@ -10,8 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
+        android:usesCleartextTraffic="true">
         <activity android:name=".Activity.AddActivity"></activity>
         <activity android:name=".Activity.InboxActivity" />
         <activity
