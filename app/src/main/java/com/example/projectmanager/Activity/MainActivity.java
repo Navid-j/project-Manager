@@ -28,7 +28,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,10 +41,18 @@ public class MainActivity extends AppCompatActivity {
     int w, h;
     RecyclerView homeRV;
     ArrayList<Projects> projectList = new ArrayList<>();
+    SimpleDateFormat inputDate, outputDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         w = getWindowManager().getDefaultDisplay().getWidth();
@@ -49,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         backIcon = findViewById(R.id.backgrand_icon);
         homeRV = findViewById(R.id.home_rv);
+        inputDate = new SimpleDateFormat("yyy-mm-dd hh:mm:ss");
+        outputDate = new SimpleDateFormat("yyy-mm-dd");
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
@@ -80,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        AndroidNetworking.get("http://192.168.1.114/mitra/GetData.php")
+        AndroidNetworking.get("http://192.168.43.109/mitra/GetData.php")
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
@@ -91,19 +104,27 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONArray fullProjects = response.getJSONArray("projects");
                             JSONObject project;
+                            Date date = new Date();
                             for (int i = 0; i < fullProjects.length(); i++) {
                                 project = fullProjects.getJSONObject(i);
                                 Log.d(TAG, "onResponsex: " + project);
+                                try {
+                                    date = (inputDate.parse(project.getString("date")));
+                                } catch (ParseException e) {
+                                    Log.d(TAG, "onErrprResponse: " + e.getMessage());
+                                    e.printStackTrace();
+                                }
                                 projectList.add(new Projects(project.getInt("id")
                                         , project.getString("projectName")
                                         , project.getString("projectIntro")
                                         , project.getString("producerId")
-                                        , project.getString("date")));
+                                        , outputDate.format(date)));
                                 Log.d(TAG, "onResponse: " + projectList.get(i).getProjectName());
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.e(TAG, "onResponse: " + e.getMessage());
                         }
                         homeRV.setAdapter(new HomeRvAdapter(projectList));
 

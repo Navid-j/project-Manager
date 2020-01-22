@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvViewHolder> {
 
     private ArrayList<Projects> mProjects;
-
 
     class HomeRvViewHolder extends RecyclerView.ViewHolder {
         TextView pName;
@@ -42,12 +42,18 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvView
             h = displayMetrics.heightPixels;
 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    (int) (w / 1.1),
                     h / 6);
             cardView.setLayoutParams(params);
 
-//            RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(w,h);
-
+            RelativeLayout.LayoutParams Rparams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    , ViewGroup.LayoutParams.WRAP_CONTENT);
+            Rparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            Rparams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            Rparams.leftMargin = w / 30;
+            Rparams.bottomMargin = h / 80;
+            pDate.setLayoutParams(Rparams);
         }
     }
 
@@ -68,7 +74,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvView
         Projects projects = mProjects.get(position);
 
         holder.pName.setText(projects.getProjectName());
-        holder.pProducer.setText(projects.getProducerId());
+        holder.pProducer.setText(" " + projects.getProducerId() + " ");
         holder.pDate.setText(projects.getDate());
 
     }

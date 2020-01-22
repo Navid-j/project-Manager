@@ -7,9 +7,11 @@
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="8dp"
+    android:clickable="true"
     android:fadeScrollbars="true"
     android:fadingEdge="vertical"
     android:fadingEdgeLength="50dp"
+    android:focusable="true"
     android:layoutDirection="rtl"
     android:outlineAmbientShadowColor="@color/cardview_dark_background"
     android:outlineSpotShadowColor="@color/cardview_dark_background"
@@ -42,16 +44,16 @@
             android:layout_below="@+id/tv_project_name"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
-            android:layout_marginBottom="6dp" />
+            android:layout_marginBottom="6dp"
+            android:drawableRight="@drawable/ic_person"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/tv_project_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="6dp"
-            android:layout_marginBottom="6dp" />
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

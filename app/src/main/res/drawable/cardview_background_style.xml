@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:angle="360"
-        android:startColor="@color/transparent"
-        android:endColor="#59F84298" />
+        android:endColor="@color/cardview_background_style_color"
+        android:startColor="@color/transparent" />
 
 </shape>
