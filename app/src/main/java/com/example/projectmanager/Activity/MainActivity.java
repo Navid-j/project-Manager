@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView homeRV;
     ArrayList<Projects> projectList = new ArrayList<>();
     SimpleDateFormat inputDate, outputDate;
-
+    SpaceNavigationView spaceNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +63,9 @@ public class MainActivity extends AppCompatActivity {
         inputDate = new SimpleDateFormat("yyy-mm-dd hh:mm:ss");
         outputDate = new SimpleDateFormat("yyy-mm-dd");
 
-        SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
-        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
+        spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
-//        spaceNavigationView.showBadgeAtIndex(2, 5, getResources().getColor(R.color.badge_background_color));
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "position " + position, Toast.LENGTH_SHORT).show();
+                spaceNavigationView.showBadgeAtIndex(1, 3, getResources().getColor(R.color.badge_background_color));
             }
 
             @Override
@@ -146,12 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(int itemIndex, String itemName) {
-                Toast.makeText(MainActivity.this, itemIndex + " " + itemName, Toast.LENGTH_SHORT).show();
                 if (itemIndex == 0) {
 //                    intent = new Intent(MainActivity.this, MainActivity.class);
 //                    startActivity(intent);
                 } else {
-                    intent = new Intent(MainActivity.this, AddActivity.class);
+                    intent = new Intent(MainActivity.this, InboxActivity.class);
                     startActivity(intent);
                 }
 

@@ -39,11 +39,8 @@ public class InboxActivity extends AppCompatActivity {
         backIcon = findViewById(R.id.backgrand_icon);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
-        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
-        spaceNavigationView.setSelected(true);
-        spaceNavigationView.isSelected();
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
         params.addRule(RelativeLayout.CENTER_IN_PARENT);

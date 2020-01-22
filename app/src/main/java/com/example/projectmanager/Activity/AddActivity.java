@@ -27,11 +27,8 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
-        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
-        spaceNavigationView.setSelected(true);
-        spaceNavigationView.isSelected();
 
         spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
