@@ -6,4 +6,5 @@
     <color name="transparent">#00D81B60</color>
     <color name="transparent2">#3BD1C7C7</color>
     <color name="cardview_background_style_color">#32FF007A</color>
+    <color name="edt_background">#A5A2A2</color>
 </resources>
