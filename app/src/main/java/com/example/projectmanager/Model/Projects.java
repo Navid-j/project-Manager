@@ -1,4 +1,4 @@
-package com.example.projectmanager.Utils;
+package com.example.projectmanager.Model;
 
 public class Projects {
     private int id;

@@ -14,7 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanager.R;
-import com.example.projectmanager.Utils.Projects;
+import com.example.projectmanager.Model.Projects;
 
 import java.util.ArrayList;
 

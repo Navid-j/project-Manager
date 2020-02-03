@@ -81,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Toast.makeText(SignupActivity.this, "status:" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
                             if (response.getString("success").equals("1")) {
                                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
 

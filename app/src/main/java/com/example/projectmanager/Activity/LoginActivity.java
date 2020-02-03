@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn, signUpBtn;
     EditText usernameBox, passwordBox;
     TextView usernameHint, passwordHint;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordBox = findViewById(R.id.edt_pass);
         usernameHint = findViewById(R.id.hint_username);
         passwordHint = findViewById(R.id.hint_password);
+        progressBar = findViewById(R.id.loginProgress);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void authentication() {
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get("http://192.168.1.114/mitra/Login.php?user={username}&pass={password}")
                 .addPathParameter("username", usernameBox.getText().toString())
                 .addPathParameter("password", passwordBox.getText().toString())
@@ -70,9 +74,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Toast.makeText(LoginActivity.this, "status:" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
                             if (response.getString("success").equals("1")) {
+
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                progressBar.setVisibility(View.GONE);
 
                             }
                         } catch (JSONException e) {

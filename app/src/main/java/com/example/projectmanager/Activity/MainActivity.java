@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -18,8 +20,9 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.projectmanager.Adapter.HomeRvAdapter;
 import com.example.projectmanager.R;
-import com.example.projectmanager.Utils.Projects;
+import com.example.projectmanager.Model.Projects;
 import com.example.projectmanager.Utils.RecyclerItemClickListener;
+import com.google.android.material.card.MaterialCardView;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivityTag";
     Intent intent;
     ImageView backIcon;
+    MaterialCardView profileCardView;
+    TextView tvUserName, tvUserID;
     int w, h;
     RecyclerView homeRV;
     ArrayList<Projects> projectList = new ArrayList<>();
@@ -60,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         backIcon = findViewById(R.id.backgrand_icon);
         homeRV = findViewById(R.id.home_rv);
+        profileCardView = findViewById(R.id.profile_icon_cardview);
+        tvUserName = findViewById(R.id.tv_username);
+        tvUserID = findViewById(R.id.tv_user_id);
+
         inputDate = new SimpleDateFormat("yyy-mm-dd hh:mm:ss");
         outputDate = new SimpleDateFormat("yyy-mm-dd");
 
@@ -74,8 +83,27 @@ public class MainActivity extends AppCompatActivity {
         params = new RelativeLayout.LayoutParams(w, h);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.addRule(RelativeLayout.ABOVE, R.id.space);
-        params.setMargins(w / 22, h / 25, w / 22, 0);
+        params.addRule(RelativeLayout.BELOW, R.id.profile_icon_cardview);
+        params.setMargins(w / 22, h / 45, w / 22, 0);
         homeRV.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(w / 10, h / 18);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.setMargins(0, h / 60, w / 50, 0);
+        profileCardView.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.LEFT_OF, R.id.profile_icon_cardview);
+        params.setMargins(0, h / 40, w / 60, 0);
+        tvUserName.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.setMargins(w / 40, h / 40, 0, 0);
+        tvUserID.setLayoutParams(params);
 
         homeRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
 
