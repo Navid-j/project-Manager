@@ -149,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
                             Date date = new Date();
                             for (int i = 0; i < fullProjects.length(); i++) {
                                 project = fullProjects.getJSONObject(i);
-                                Log.d(TAG, "onResponsex: " + project);
+                                Log.d(TAG, "onResponse: " + project);
                                 try {
                                     date = (inputDate.parse(project.getString("date")));
                                 } catch (ParseException e) {
-                                    Log.d(TAG, "onErrprResponse: " + e.getMessage());
+                                    Log.d(TAG, "onErrorResponse: " + e.getMessage());
                                     e.printStackTrace();
                                 }
                                 projectList.add(new Projects(project.getInt("id")

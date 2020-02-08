@@ -6,6 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".Activity.AddActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Project Name: " />
+
+        <EditText
+            android:id="@+id/edt_new_project_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:ems="10"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Project Intro: " />
+
+        <EditText
+            android:id="@+id/edt_new_project_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:ems="10"
+            android:inputType="text" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btn_addproj_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="#D81B60"
+                android:text="Clear"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/btn_add_new_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="#7CB342"
+                android:text="Add"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+
     <com.luseen.spacenavigation.SpaceNavigationView
         android:id="@+id/space"
         android:layout_width="match_parent"
