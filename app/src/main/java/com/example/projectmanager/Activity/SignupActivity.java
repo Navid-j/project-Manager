@@ -19,10 +19,12 @@ import com.example.projectmanager.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
+
 public class SignupActivity extends AppCompatActivity {
 
     Button signupBtn, resetBtn;
-    EditText edtName, edtFamily, edtPersonnelCode, edtPhoneNumber, edtUsername, edtPassword, edtVerifyPassword;
+    EditText edtName, edtFamily, edtPersonnelCode, edtPhoneNumber, edtPassword, edtVerifyPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,6 @@ public class SignupActivity extends AppCompatActivity {
         edtFamily = findViewById(R.id.edt_signup_family);
         edtPersonnelCode = findViewById(R.id.edt_signup_personnel_code);
         edtPhoneNumber = findViewById(R.id.edt_signup_phone);
-        edtUsername = findViewById(R.id.edt_signup_username);
         edtPassword = findViewById(R.id.edt_signup_password);
         edtVerifyPassword = findViewById(R.id.edt_signup_verify_password);
 
@@ -58,7 +59,6 @@ public class SignupActivity extends AppCompatActivity {
                 edtFamily.setText("");
                 edtPersonnelCode.setText("");
                 edtPhoneNumber.setText("");
-                edtUsername.setText("");
                 edtPassword.setText("");
                 edtVerifyPassword.setText("");
             }
@@ -66,13 +66,12 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signUpUser(String verifiedPass) {
-        AndroidNetworking.get("http://192.168.1.114/mitra/Register.php?first_name={firstName}&last_name={lastName}" +
-                "&personnel_code={personnelCode}&phone_number={phoneNumber}&level=0&user={userName}&pass={password}")
+        AndroidNetworking.get(HOST_NAME + "mitra/Register.php?first_name={firstName}&last_name={lastName}" +
+                "&personnel_code={personnelCode}&phone_number={phoneNumber}&level=0&pass={password}")
                 .addPathParameter("firstName", edtName.getText().toString())
                 .addPathParameter("lastName", edtFamily.getText().toString())
                 .addPathParameter("personnelCode", edtPersonnelCode.getText().toString())
                 .addPathParameter("phoneNumber", edtPhoneNumber.getText().toString())
-                .addPathParameter("userName", edtUsername.getText().toString())
                 .addPathParameter("password", verifiedPass)
                 .setTag(this)
                 .setPriority(Priority.HIGH)

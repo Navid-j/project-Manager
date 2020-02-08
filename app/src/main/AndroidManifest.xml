@@ -14,7 +14,11 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Activity.SignupActivity"></activity>
         <activity android:name=".Activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activity.AddActivity" />
         <activity android:name=".Activity.InboxActivity" />
@@ -22,11 +26,7 @@
             android:name=".Activity.MainActivity"
             android:screenOrientation="portrait">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>

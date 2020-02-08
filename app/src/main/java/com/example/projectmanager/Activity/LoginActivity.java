@@ -21,7 +21,14 @@ import com.example.projectmanager.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class LoginActivity extends AppCompatActivity {
+
+    public static String HOST_NAME = "http://192.168.1.114/";
+    public static String USER_ID = null;
+    public static String USER_LEVEL = "0";
+    public static String USER_NAME = " ";
+    public static String USER_FAMILY = " ";
 
     Button loginBtn, signUpBtn;
     EditText usernameBox, passwordBox;
@@ -63,9 +70,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void authentication() {
+
         progressBar.setVisibility(View.VISIBLE);
-        AndroidNetworking.get("http://192.168.1.114/mitra/Login.php?user={username}&pass={password}")
-                .addPathParameter("username", usernameBox.getText().toString())
+        AndroidNetworking.get(HOST_NAME + "mitra/Login.php?personnelCode={code}&pass={password}")
+                .addPathParameter("code", usernameBox.getText().toString())
                 .addPathParameter("password", passwordBox.getText().toString())
                 .setTag(this)
                 .setPriority(Priority.HIGH)
@@ -76,7 +84,10 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             Toast.makeText(LoginActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
                             if (response.getString("success").equals("1")) {
-
+                                USER_ID = usernameBox.getText().toString();
+                                USER_LEVEL = response.getString("level");
+                                USER_NAME = response.getString("name");
+                                USER_FAMILY = response.getString("family");
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 progressBar.setVisibility(View.GONE);
 
@@ -89,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onError(ANError anError) {
                         Log.e("loginActivity", "onError: " + anError);
+                        Toast.makeText(LoginActivity.this, "" + anError, Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
 
                     }
                 });

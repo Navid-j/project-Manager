@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Activity.LoginActivity">
 
+
+
     <EditText
         android:id="@+id/edt_username"
         android:layout_width="wrap_content"
@@ -13,6 +15,7 @@
         android:layout_above="@+id/edt_pass"
         android:layout_centerHorizontal="true"
         android:hint="UserName"
+        android:inputType="number"
         android:singleLine="true"
         android:visibility="gone" />
 
@@ -23,7 +26,7 @@
         android:layout_alignBottom="@+id/edt_username"
         android:layout_marginBottom="6dp"
         android:layout_toLeftOf="@+id/edt_username"
-        android:text="username "
+        android:text="Personnel Code "
         android:visibility="gone" />
 
     <EditText

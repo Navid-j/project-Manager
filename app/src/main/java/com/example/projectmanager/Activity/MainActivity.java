@@ -36,9 +36,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
+import static com.example.projectmanager.Activity.LoginActivity.USER_FAMILY;
+import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
+import static com.example.projectmanager.Activity.LoginActivity.USER_LEVEL;
+import static com.example.projectmanager.Activity.LoginActivity.USER_NAME;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivityTag";
+    public static Boolean ADMIN = false;
     Intent intent;
     ImageView backIcon;
     MaterialCardView profileCardView;
@@ -83,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
         params = new RelativeLayout.LayoutParams(w, h);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.addRule(RelativeLayout.ABOVE, R.id.space);
-        params.addRule(RelativeLayout.BELOW, R.id.profile_icon_cardview);
-        params.setMargins(w / 22, h / 45, w / 22, 0);
+        params.setMargins(w / 22, h / 10, w / 22, 0);
         homeRV.setLayoutParams(params);
 
         params = new RelativeLayout.LayoutParams(w / 10, h / 18);
@@ -120,7 +126,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        AndroidNetworking.get("http://192.168.43.109/mitra/GetData.php")
+        String link;
+        if (USER_LEVEL.equals("1"))
+            link = "mitra/GetData.php";
+        else
+            link = "mitra/GetData.php?pers_code=" + USER_ID;
+
+        tvUserID.setText(USER_ID);
+        tvUserName.setText(USER_NAME + " " + USER_FAMILY);
+
+        AndroidNetworking.get(HOST_NAME + link)
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
@@ -199,5 +214,11 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        projectList.clear();
     }
 }
