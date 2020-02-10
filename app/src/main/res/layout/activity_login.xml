@@ -4,69 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background_style"
     tools:context=".Activity.LoginActivity">
 
-
-
-    <EditText
-        android:id="@+id/edt_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/edt_pass"
-        android:layout_centerHorizontal="true"
-        android:hint="UserName"
-        android:inputType="number"
-        android:singleLine="true"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/hint_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/edt_username"
-        android:layout_marginBottom="6dp"
-        android:layout_toLeftOf="@+id/edt_username"
-        android:text="Personnel Code "
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/edt_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_sign_in"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:singleLine="true"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/hint_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/edt_pass"
-        android:layout_marginBottom="6dp"
-        android:layout_toLeftOf="@+id/edt_pass"
-        android:text="password "
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btn_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/login_cardview"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="4dp"
-        android:text="sign in"
-        android:textStyle="bold" />
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="20dp"
+        android:outlineSpotShadowColor="@color/black"
+        app:cardCornerRadius="8dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/login_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/login" />
+
+            <EditText
+                android:id="@+id/edt_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_logo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:background="#A1C2C1C1"
+                android:drawableRight="@drawable/ic_person"
+                android:hint="User Name"
+                android:inputType="number"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/edt_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_username"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="#A1C2C1C1"
+                android:drawableRight="@drawable/ic_key"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimary"
+                android:text="sign in"
+                android:textColor="@color/space_white"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btn_sign_up"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_sign_in"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
+        android:layout_alignTop="@+id/login_cardview"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="-50dp"
+        android:layout_toRightOf="@+id/login_cardview"
         android:text="sign Up" />
 
     <ProgressBar
@@ -74,5 +96,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="visible" />
 </RelativeLayout>

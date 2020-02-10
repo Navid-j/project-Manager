@@ -1,14 +1,19 @@
 package com.example.projectmanager.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,21 +37,27 @@ public class LoginActivity extends AppCompatActivity {
 
     Button loginBtn, signUpBtn;
     EditText usernameBox, passwordBox;
-    TextView usernameHint, passwordHint;
+    CardView mainCardView;
     ProgressBar progressBar;
+    ImageView loginLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        DisplayMetrics displayMetrics = LoginActivity.this.getResources().getDisplayMetrics();
+
+        int w = displayMetrics.widthPixels;
+        int h = displayMetrics.heightPixels;
+
         loginBtn = findViewById(R.id.btn_sign_in);
         signUpBtn = findViewById(R.id.btn_sign_up);
         usernameBox = findViewById(R.id.edt_username);
         passwordBox = findViewById(R.id.edt_pass);
-        usernameHint = findViewById(R.id.hint_username);
-        passwordHint = findViewById(R.id.hint_password);
         progressBar = findViewById(R.id.loginProgress);
+        mainCardView = findViewById(R.id.login_cardview);
+        loginLogo = findViewById(R.id.login_logo);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +77,34 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) (w / 1.2), h / 2);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        mainCardView.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(w / 4, h / 6);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.topMargin = h / 40;
+        loginLogo.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(w / 4, h / 10);
+        params.addRule(RelativeLayout.RIGHT_OF, R.id.login_cardview);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.topMargin = h / 40;
+        params.leftMargin = -w / 8;
+        signUpBtn.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams((int) (w / 1.5), ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.BELOW, R.id.login_logo);
+        params.topMargin = h / 30;
+        usernameBox.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams((int) (w / 1.5), ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.BELOW, R.id.edt_username);
+        params.topMargin = h / 30;
+        passwordBox.setLayoutParams(params);
 
     }
 
