@@ -3,6 +3,8 @@
     package="com.example.projectmanager">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.SignupActivity"></activity>
+        <activity android:name=".Activity.SendMessageActivity"></activity>
+        <activity android:name=".Activity.SignupActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +27,7 @@
         <activity android:name=".Activity.InboxActivity" />
         <activity
             android:name=".Activity.MainActivity"
-            android:screenOrientation="portrait">
-
-
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

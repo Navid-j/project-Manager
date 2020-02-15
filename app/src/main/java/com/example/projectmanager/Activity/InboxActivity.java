@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -20,6 +21,7 @@ public class InboxActivity extends AppCompatActivity {
 
     Intent intent;
     ImageView backIcon;
+    Button btnSendMessage;
     int w, h;
 
     @Override
@@ -37,6 +39,7 @@ public class InboxActivity extends AppCompatActivity {
         h = getWindowManager().getDefaultDisplay().getHeight();
 
         backIcon = findViewById(R.id.backgrand_icon);
+        btnSendMessage = findViewById(R.id.btn_send_message);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
@@ -70,6 +73,13 @@ public class InboxActivity extends AppCompatActivity {
             @Override
             public void onItemReselected(int itemIndex, String itemName) {
 
+            }
+        });
+
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(InboxActivity.this, SendMessageActivity.class));
             }
         });
     }

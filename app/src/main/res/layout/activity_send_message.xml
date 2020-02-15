@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SendMessageActivity">
+
+    <TextView
+        android:id="@+id/tv_send_message_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:text="رسال پیام به کاربر"
+        android:textColor="@color/design_default_color_primary"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/message_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_send_message_title"
+        android:layout_margin="6dp"
+        android:background="#E2DFDF"
+        android:gravity="top"
+        android:hint=" پیام شما ..."
+        android:minLines="6"
+        android:padding="4dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_attach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_box"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="6dp"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/attack_img_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attach" />
+
+        <Button
+            android:id="@+id/btn_upload_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="اپلود فایل" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="فایل های مجاز: تصاویر , pdf" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_selected_file_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_attach"
+        android:layout_marginRight="4dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_selected_file_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="ارسال پیام" />
+
+</RelativeLayout>

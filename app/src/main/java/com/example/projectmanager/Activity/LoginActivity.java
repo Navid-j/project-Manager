@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -93,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         params.topMargin = h / 40;
         params.leftMargin = -w / 8;
         signUpBtn.setLayoutParams(params);
+
 
         params = new RelativeLayout.LayoutParams((int) (w / 1.5), ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
