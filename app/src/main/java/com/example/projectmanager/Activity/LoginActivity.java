@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,11 +29,13 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static String HOST_NAME = "http://192.168.1.114/";
+    public static String HOST_NAME = "http://192.168.43.109/";
     public static String USER_ID = null;
+    public static Boolean isLogin = false;
     public static String USER_LEVEL = "0";
     public static String USER_NAME = " ";
     public static String USER_FAMILY = " ";
+    public static String MY_PREF = " ";
 
     Button loginBtn, signUpBtn;
     EditText usernameBox, passwordBox;
@@ -40,12 +43,28 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     ImageView loginLogo;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         DisplayMetrics displayMetrics = LoginActivity.this.getResources().getDisplayMetrics();
+
+        preferences = getApplicationContext().getSharedPreferences(MY_PREF, MODE_PRIVATE);
+        editor = preferences.edit();
+
+        isLogin = preferences.getBoolean("isLogin", false);
+        USER_ID = preferences.getString("userID", null);
+        USER_LEVEL = preferences.getString("USER_LEVEL", "0");
+        USER_NAME = preferences.getString("USER_NAME", " ");
+        USER_FAMILY = preferences.getString("USER_FAMILY", " ");
+
+        if (isLogin)
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
 
         int w = displayMetrics.widthPixels;
         int h = displayMetrics.heightPixels;
@@ -127,6 +146,13 @@ public class LoginActivity extends AppCompatActivity {
                                 USER_LEVEL = response.getString("level");
                                 USER_NAME = response.getString("name");
                                 USER_FAMILY = response.getString("family");
+                                editor.putBoolean("isLogin", true);
+                                editor.putString("userID", USER_ID);
+                                editor.putString("USER_LEVEL", response.getString("level"));
+                                editor.putString("USER_NAME", response.getString("name"));
+                                editor.putString("USER_FAMILY", response.getString("family"));
+                                editor.apply();
+
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 progressBar.setVisibility(View.GONE);
 

@@ -1,11 +1,16 @@
 package com.example.projectmanager.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,14 +19,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.example.projectmanager.R;
 import com.example.projectmanager.Utils.FilePath;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,11 +47,13 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
     private static final int PICK_FILE_REQUEST = 1;
     private static final String TAG = "SendMessageActivity";
     private String selectedFilePath;
-    private String SERVER_URL = HOST_NAME + "upload.php";
+    private File file;
+    private String SERVER_URL = HOST_NAME + "mitra/upload.php?";
     ImageView ivAttachment;
     Button bUpload;
     TextView tvFileName;
     ProgressDialog dialog;
+    private String mes;
 
 
     @Override
@@ -54,7 +71,11 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         if (v == ivAttachment) {
 
-            showFileChooser();
+            if (ContextCompat.checkSelfPermission(SendMessageActivity.this
+                    , Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(SendMessageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+            } else
+                showFileChooser();
         }
         if (v == bUpload) {
 
@@ -66,6 +87,8 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
                         uploadFile(selectedFilePath);
+//                        new UploadFileAsync().execute("");
+//                        uploadFast(selectedFilePath);
                     }
                 }).start();
             } else {
@@ -73,6 +96,41 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
             }
 
         }
+    }
+
+    private void uploadFast(String fileString) {
+        file = new File(fileString);
+        AndroidNetworking.upload(SERVER_URL)
+                .addMultipartFile("image", file)
+                .setTag(this)
+                .setPriority(Priority.HIGH)
+                .build()
+                .setUploadProgressListener(new UploadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes) {
+                        // do anything with progress
+                        Log.d(TAG, "onProgress: " + "upload on Progress");
+                        dialog.dismiss();
+                        Toast.makeText(SendMessageActivity.this, "Complete", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        Log.d(TAG, "onResponse: " + "upload Complete");
+                        Toast.makeText(SendMessageActivity.this, "Error uploading", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        Log.d(TAG, "onError: " + error.getMessage());
+
+                    }
+                });
     }
 
     private void showFileChooser() {
@@ -178,11 +236,20 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
 
                 Log.i(TAG, "Server Response is: " + serverResponseMessage + ": " + serverResponseCode);
 
+                InputStreamReader in = new InputStreamReader((InputStream) connection.getContent());
+                BufferedReader buff = new BufferedReader(in);
+                String line = null;
+                do {
+                    line = buff.readLine();
+                    if (line != null)
+                        mes += line;
+                } while (line != null);
                 if (serverResponseCode == 200) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvFileName.setText("File Upload completed.\n\n You can see the uploaded file here: \n\n" + "http://programchi.ir/uploads/" + fileName);
+                            tvFileName.setText("File Upload completed ...");
+                            Log.d(TAG, "run: " + mes);
                         }
                     });
                 }
@@ -195,6 +262,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                Log.d(TAG, "uploadFile: " + e.getMessage());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
