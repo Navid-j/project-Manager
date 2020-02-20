@@ -8,16 +8,25 @@
 
     <TextView
         android:id="@+id/tv_send_message_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:text="رسال پیام به کاربر"
+        android:text="ارسال پیام به کاربر: "
         android:textColor="@color/design_default_color_primary"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:id="@+id/btn_message_user_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tv_send_message_title"
+        android:text="انتخاب کاربر"
+        android:textColor="@color/red" />
 
     <EditText
-        android:id="@+id/message_box"
+        android:id="@+id/edt_send_message_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_send_message_title"
@@ -30,21 +39,15 @@
 
     <LinearLayout
         android:id="@+id/layout_attach"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message_box"
+        android:layout_below="@+id/edt_send_message_box"
         android:layout_alignParentRight="true"
         android:layout_marginTop="6dp"
         android:layout_marginRight="6dp"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
         android:layoutDirection="rtl"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/attack_img_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_attach" />
 
         <Button
             android:id="@+id/btn_upload_file"
@@ -52,11 +55,56 @@
             android:layout_height="wrap_content"
             android:text="اپلود فایل" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/attack_img_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="فایل های مجاز: تصاویر , pdf" />
+            android:layout_marginRight="6dp"
+            android:foreground="@drawable/ring"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="انتخاب فایل" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_attach" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_uploaded_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_attach"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_uploaded_filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="File Name" />
+
+        <Button
+            android:id="@+id/btn_delete_uploaded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/ic_delete_file"
+            android:text="حذف" />
     </LinearLayout>
 
     <TextView
@@ -67,11 +115,14 @@
         android:layout_marginRight="4dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_send_message_submit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_selected_file_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
-        android:text="ارسال پیام" />
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="ارسال پیام"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

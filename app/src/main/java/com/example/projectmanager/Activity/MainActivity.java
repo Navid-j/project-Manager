@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tvUserName, tvUserID;
     int w, h;
     RecyclerView homeRV;
-    ArrayList<Projects> projectList = new ArrayList<>();
+    private ArrayList<Projects> projectList = new ArrayList<>();
     SimpleDateFormat inputDate, outputDate;
     SpaceNavigationView spaceNavigationView;
+    private int exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
+        spaceNavigationView.changeCurrentItem(0);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -182,8 +185,9 @@ public class MainActivity extends AppCompatActivity {
         spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
             public void onCentreButtonClick() {
-                intent = new Intent(MainActivity.this, AddActivity.class);
+                intent = new Intent(MainActivity.this, AddProjectActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     intent = new Intent(MainActivity.this, InboxActivity.class);
                     startActivity(intent);
+                    finish();
                 }
 
             }
@@ -220,5 +225,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         projectList.clear();
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit++;
+        if (exit == 2)
+            finishAffinity();
+        else {
+            Toast.makeText(this, "برای خروج دوباره بزن!", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = 0;
+                }
+            }, 2500);
+        }
     }
 }

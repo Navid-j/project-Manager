@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
 import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
 
-public class AddActivity extends AppCompatActivity {
+public class AddProjectActivity extends AppCompatActivity {
 
     Button signupBtn, resetBtn;
     EditText edtName, edtIntro;
@@ -45,6 +45,8 @@ public class AddActivity extends AppCompatActivity {
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
         spaceNavigationView.addSpaceItem(new SpaceItem("INBOX", R.drawable.ic_action_message));
+        spaceNavigationView.setCentreButtonSelectable(true);
+        spaceNavigationView.setCentreButtonSelected();
 
         signupBtn = findViewById(R.id.btn_add_new_project);
         resetBtn = findViewById(R.id.btn_addproj_clear);
@@ -54,18 +56,18 @@ public class AddActivity extends AppCompatActivity {
         spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
             public void onCentreButtonClick() {
-//                intent = new Intent(AddActivity.this, AddActivity.class);
+//                intent = new Intent(AddProjectActivity.this, AddProjectActivity.class);
 //                startActivity(intent);
             }
 
             @Override
             public void onItemClick(int itemIndex, String itemName) {
                 if (itemIndex == 0) {
-                    intent = new Intent(AddActivity.this, MainActivity.class);
+                    intent = new Intent(AddProjectActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    intent = new Intent(AddActivity.this, InboxActivity.class);
+                    intent = new Intent(AddProjectActivity.this, InboxActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -83,9 +85,9 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (edtName.getText().toString().equals("") || edtIntro.getText().toString().equals("")) {
-                    Toast.makeText(AddActivity.this, "لطفا اطلاعات را کامل وارد کنید!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddProjectActivity.this, "لطفا اطلاعات را کامل وارد کنید!", Toast.LENGTH_SHORT).show();
                 } else
-                    signUpUser();
+                    AddNewProj();
 
             }
         });
@@ -99,7 +101,7 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
-    private void signUpUser() {
+    private void AddNewProj() {
         AndroidNetworking.get(HOST_NAME + "mitra/AddProject.php?project_name={projectName}&project_intro={projectIntro}" +
                 "&personnel_code={personnelCode}")
                 .addPathParameter("projectName", edtName.getText().toString())
@@ -112,9 +114,9 @@ public class AddActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Toast.makeText(AddActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProjectActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
                             if (response.getString("success").equals("1")) {
-                                startActivity(new Intent(AddActivity.this, MainActivity.class));
+                                startActivity(new Intent(AddProjectActivity.this, MainActivity.class));
                                 finish();
 
                             }
@@ -141,5 +143,10 @@ public class AddActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.AddActivity">
+    tools:context=".Activity.AddProjectActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,10 +74,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:active_centre_button_background_color="#ff00f0"
-        app:active_centre_button_icon_color="#FF4081"
-        app:centre_button_color="#FFFFFF"
+        app:active_centre_button_background_color="#ffffff"
+        app:active_centre_button_icon_color="#ffffff"
+        app:centre_button_color="#F77FEF"
         app:centre_button_icon="@drawable/ic_action_new"
-        app:inactive_centre_button_icon_color="#F816EE" />
+        app:inactive_centre_button_icon_color="#ffffff" />
 
 </RelativeLayout>

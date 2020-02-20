@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static String HOST_NAME = "http://192.168.43.109/";
+    public static String HOST_NAME = "http://192.168.1.114/";
     public static String USER_ID = null;
     public static Boolean isLogin = false;
     public static String USER_LEVEL = "0";
@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 progressBar.setVisibility(View.GONE);
-
+                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -171,5 +171,4 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

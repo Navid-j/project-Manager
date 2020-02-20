@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".Activity.InboxActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inbox_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/space"
+        android:clickable="true"
+        android:fadeScrollbars="true"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="40dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:requiresFadingEdge="vertical" />
+
     <ImageView
         android:id="@+id/backgrand_icon"
         android:layout_width="wrap_content"
@@ -24,10 +37,4 @@
         app:centre_button_color="#FFFFFF"
         app:centre_button_icon="@drawable/ic_action_new"
         app:inactive_centre_button_icon_color="#F816EE" />
-
-    <Button
-        android:id="@+id/btn_send_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send message" />
 </RelativeLayout>

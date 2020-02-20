@@ -10,12 +10,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +23,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.UploadProgressListener;
 import com.example.projectmanager.R;
 import com.example.projectmanager.Utils.FilePath;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -42,38 +42,75 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
+import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
 
 public class SendMessageActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int PICK_FILE_REQUEST = 1;
     private static final String TAG = "SendMessageActivity";
-    private String selectedFilePath;
-    private File file;
+    private static final int USER_RESULT_CODE = 20;
+    private String selectedFilePath, FILE_NAME;
     private String SERVER_URL = HOST_NAME + "mitra/upload.php?";
-    ImageView ivAttachment;
-    Button bUpload;
-    TextView tvFileName;
-    ProgressDialog dialog;
+    private LinearLayout layoutAttachmentBtn, layoutUploaded, layoutAttachBox;
+    private Button bUpload, btnSubmit, btnDeleteFile, btnSelectUser;
+    private TextView tvFileName, tvUploadedFileName, tvGetterUserName;
+    private ProgressDialog dialog;
     private String mes;
-
+    private EditText edtMessageBox;
+    private boolean file_exist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
-        ivAttachment = findViewById(R.id.attack_img_view);
-        bUpload = (Button) findViewById(R.id.btn_upload_file);
-        tvFileName = (TextView) findViewById(R.id.tv_selected_file_name);
-        ivAttachment.setOnClickListener(this);
+
+        layoutAttachmentBtn = findViewById(R.id.attack_img_view);
+        layoutAttachBox = findViewById(R.id.layout_attach);
+        bUpload = findViewById(R.id.btn_upload_file);
+        tvFileName = findViewById(R.id.tv_selected_file_name);
+        layoutAttachmentBtn.setOnClickListener(this);
         bUpload.setOnClickListener(this);
+        btnSubmit = findViewById(R.id.btn_send_message_submit);
+        edtMessageBox = findViewById(R.id.edt_send_message_box);
+        btnDeleteFile = findViewById(R.id.btn_delete_uploaded);
+        tvUploadedFileName = findViewById(R.id.tv_uploaded_filename);
+        layoutUploaded = findViewById(R.id.layout_uploaded_file);
+        btnSelectUser = findViewById(R.id.btn_message_user_select);
+        tvGetterUserName = findViewById(R.id.tv_send_message_title);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edtMessageBox.getText().length() < 2)
+                    Toast.makeText(SendMessageActivity.this, "لطفا متن پیام را وارد کنید!", Toast.LENGTH_SHORT).show();
+                else {
+                    SendMessage();
+                }
+            }
+        });
+
+        btnDeleteFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DeleteFile();
+            }
+        });
+
+        btnSelectUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(SendMessageActivity.this, SelectUserActivity.class), USER_RESULT_CODE);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        if (v == ivAttachment) {
+        if (v == layoutAttachmentBtn) {
 
             if (ContextCompat.checkSelfPermission(SendMessageActivity.this
                     , Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(SendMessageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+                ActivityCompat.requestPermissions(SendMessageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
             } else
                 showFileChooser();
         }
@@ -87,47 +124,99 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
                         uploadFile(selectedFilePath);
-//                        new UploadFileAsync().execute("");
-//                        uploadFast(selectedFilePath);
                     }
                 }).start();
             } else {
-                Toast.makeText(SendMessageActivity.this, "Please choose a File First", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SendMessageActivity.this, "لطفا یک فایل انتخاب کنید", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
-    private void uploadFast(String fileString) {
-        file = new File(fileString);
-        AndroidNetworking.upload(SERVER_URL)
-                .addMultipartFile("image", file)
+    private void SendMessage() {
+        if (file_exist) {
+            AndroidNetworking.get(HOST_NAME + "mitra/AddMessage.php?userID={personnelCode}&message={messageString}" +
+                    "&file_name={fileName}&getterID={getterId}")
+                    .addPathParameter("personnelCode", USER_ID)
+                    .addPathParameter("messageString", edtMessageBox.getText().toString())
+                    .addPathParameter("fileName", FILE_NAME)
+                    .addPathParameter("getterId", FILE_NAME)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if (response.getString("success").equals("1")) {
+                                    Toast.makeText(SendMessageActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e("sendMessage", "onError: " + anError);
+                            Log.e("sendMessage", "onError: " + anError.getResponse());
+
+                        }
+                    });
+        } else {
+            AndroidNetworking.get(HOST_NAME + "mitra/AddMessage.php?userID={personnelCode}&message={messageString}")
+                    .addPathParameter("personnelCode", USER_ID)
+                    .addPathParameter("messageString", edtMessageBox.getText().toString())
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if (response.getString("success").equals("1")) {
+                                    Toast.makeText(SendMessageActivity.this, " " + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e("sendMessage", "onError: " + anError);
+                            Log.e("sendMessage", "onError: " + anError.getResponse());
+
+                        }
+                    });
+        }
+    }
+
+    private void DeleteFile() {
+        AndroidNetworking.get(HOST_NAME + "mitra/DeleteFile.php?file_name={filename}")
+                .addPathParameter("filename", FILE_NAME)
                 .setTag(this)
-                .setPriority(Priority.HIGH)
+                .setPriority(Priority.MEDIUM)
                 .build()
-                .setUploadProgressListener(new UploadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes) {
-                        // do anything with progress
-                        Log.d(TAG, "onProgress: " + "upload on Progress");
-                        dialog.dismiss();
-                        Toast.makeText(SendMessageActivity.this, "Complete", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // do anything with response
-                        Log.d(TAG, "onResponse: " + "upload Complete");
-                        Toast.makeText(SendMessageActivity.this, "Error uploading", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
+                        Toast.makeText(SendMessageActivity.this
+                                , "فایل حذف شد.", Toast.LENGTH_SHORT).show();
+                        layoutAttachBox.setVisibility(View.VISIBLE);
+                        tvUploadedFileName.setVisibility(View.VISIBLE);
+                        layoutUploaded.setVisibility(View.GONE);
+                        tvFileName.setVisibility(View.VISIBLE);
+                        Log.d(TAG, "onResponse: " + response);
+                        file_exist = false;
                     }
 
                     @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        Log.d(TAG, "onError: " + error.getMessage());
+                    public void onError(ANError anError) {
+                        Log.e("sendMessage", "onError: " + anError);
+                        Log.e("sendMessage", "onError: " + anError.getResponse());
 
                     }
                 });
@@ -157,15 +246,25 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                 if (selectedFilePath != null && !selectedFilePath.equals("")) {
                     tvFileName.setText(selectedFilePath);
                 } else {
-                    Toast.makeText(this, "Cannot upload file to server", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "خطا در آپلود فایل", Toast.LENGTH_SHORT).show();
                 }
+            } else if (requestCode == USER_RESULT_CODE) {
+                String username = getIntent().getStringExtra("username") + getIntent().getStringExtra("userId");
+                tvGetterUserName.setText("ارسال پیام به : " + username);
+                btnSelectUser.setVisibility(View.GONE);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+
             }
         }
     }
 
-    public int uploadFile(final String selectedFilePath) {
+    public int uploadFile(final String FilePath) {
 
         int serverResponseCode = 0;
+        mes = "";
+        file_exist = false;
 
         HttpURLConnection connection;
         DataOutputStream dataOutputStream;
@@ -177,11 +276,12 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        File selectedFile = new File(selectedFilePath);
+        File selectedFile = new File(FilePath);
 
 
-        String[] parts = selectedFilePath.split("/");
+        String[] parts = FilePath.split("/");
         final String fileName = parts[parts.length - 1];
+        FILE_NAME = fileName;
 
         if (!selectedFile.isFile()) {
             dialog.dismiss();
@@ -189,7 +289,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tvFileName.setText("Source File Doesn't Exist: " + selectedFilePath);
+                    tvFileName.setText("Source File Doesn't Exist: " + FilePath);
                 }
             });
             return 0;
@@ -205,13 +305,13 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                 connection.setRequestProperty("Connection", "Keep-Alive");
                 connection.setRequestProperty("ENCTYPE", "multipart/form-data");
                 connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                connection.setRequestProperty("uploaded_file", selectedFilePath);
+                connection.setRequestProperty("uploaded_file", FilePath);
 
                 dataOutputStream = new DataOutputStream(connection.getOutputStream());
 
                 dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
                 dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                        + selectedFilePath + "\"" + lineEnd);
+                        + FilePath + "\"" + lineEnd);
 
                 dataOutputStream.writeBytes(lineEnd);
 
@@ -239,6 +339,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                 InputStreamReader in = new InputStreamReader((InputStream) connection.getContent());
                 BufferedReader buff = new BufferedReader(in);
                 String line = null;
+
                 do {
                     line = buff.readLine();
                     if (line != null)
@@ -248,8 +349,16 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvFileName.setText("File Upload completed ...");
+                            Toast.makeText(SendMessageActivity.this, "File Upload completed ...", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "run: " + mes);
+                            tvFileName.setVisibility(View.GONE);
+                            layoutAttachBox.setVisibility(View.GONE);
+                            tvUploadedFileName.setText(FILE_NAME);
+                            layoutUploaded.setVisibility(View.VISIBLE);
+                            selectedFilePath = "";
+                            tvFileName.setText("");
+                            file_exist = true;
+
                         }
                     });
                 }
@@ -281,5 +390,10 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
             return serverResponseCode;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
