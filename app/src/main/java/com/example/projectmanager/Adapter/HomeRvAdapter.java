@@ -23,10 +23,10 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvView
     private ArrayList<Projects> mProjects;
 
     class HomeRvViewHolder extends RecyclerView.ViewHolder {
-        TextView pName;
-        TextView pProducer;
-        TextView pDate;
-        CardView cardView;
+        private TextView pName;
+        private TextView pProducer;
+        private TextView pDate;
+        private CardView cardView;
         int w, h;
         Context context;
 

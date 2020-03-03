@@ -7,16 +7,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.projectmanager.Adapter.HomeRvAdapter;
+import com.example.projectmanager.Adapter.InboxRvAdapter;
+import com.example.projectmanager.Model.Messages;
+import com.example.projectmanager.Model.Projects;
 import com.example.projectmanager.R;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
+import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
+import static com.example.projectmanager.Activity.LoginActivity.USER_LEVEL;
 
 public class InboxActivity extends AppCompatActivity {
 
@@ -25,6 +46,8 @@ public class InboxActivity extends AppCompatActivity {
     int w, h;
     private int exit;
     private RecyclerView rvInbox;
+    private ArrayList<Messages> messagesList = new ArrayList<>();
+    private String TAG = "InboxActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +102,48 @@ public class InboxActivity extends AppCompatActivity {
             }
         });
 
-        rvInbox.setLayoutManager(new LinearLayoutManager(InboxActivity.this, RecyclerView.VERTICAL, true));
+        rvInbox.setLayoutManager(new LinearLayoutManager(InboxActivity.this, RecyclerView.VERTICAL, false));
 
+
+        String link = "mitra/GetMessageList.php?getter_id=" + "0";
+
+        AndroidNetworking.get(HOST_NAME + link)
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray fullMessages = response.getJSONArray("messages");
+                            JSONObject message;
+                            Date date = new Date();
+                            for (int i = 0; i < fullMessages.length(); i++) {
+                                message = fullMessages.getJSONObject(i);
+                                Log.d(TAG, "onResponse: " + message);
+
+                                messagesList.add(new Messages(message.getInt("id")
+                                        , message.getString("messageIntro")
+                                        , message.getString("address")
+                                        , message.getString("producerId")));
+                                Log.d(TAG, "onResponse: " + messagesList.get(i).getMessageIntro());
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "onResponse: " + e.getMessage());
+                        }
+                        rvInbox.setAdapter(new InboxRvAdapter(messagesList));
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                        Log.d(TAG, "onError: " + anError);
+                    }
+                });
     }
 
     @Override

@@ -6,6 +6,7 @@
     <color name="transparent">#00D81B60</color>
     <color name="transparent2">#3BD1C7C7</color>
     <color name="cardview_background_style_color">#32FF007A</color>
+    <color name="inbox_cardview_background_style_color">#3200FF66</color>
     <color name="edt_background">#A5A2A2</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
