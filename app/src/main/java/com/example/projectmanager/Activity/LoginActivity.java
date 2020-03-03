@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static String HOST_NAME = "http://192.168.1.114/";
+    public static String HOST_NAME = "http://192.168.1.100/";
     public static String USER_ID = null;
     public static Boolean isLogin = false;
     public static String USER_LEVEL = "0";

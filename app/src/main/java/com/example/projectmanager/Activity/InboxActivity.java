@@ -1,12 +1,15 @@
 package com.example.projectmanager.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ public class InboxActivity extends AppCompatActivity {
     ImageView backIcon;
     int w, h;
     private int exit;
+    private RecyclerView rvInbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class InboxActivity extends AppCompatActivity {
         h = getWindowManager().getDefaultDisplay().getHeight();
 
         backIcon = findViewById(R.id.backgrand_icon);
+        rvInbox = findViewById(R.id.inbox_rv);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.addSpaceItem(new SpaceItem("HOME", R.drawable.ic_action_home));
@@ -73,6 +78,9 @@ public class InboxActivity extends AppCompatActivity {
 
             }
         });
+
+        rvInbox.setLayoutManager(new LinearLayoutManager(InboxActivity.this, RecyclerView.VERTICAL, true));
+
     }
 
     @Override

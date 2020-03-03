@@ -52,7 +52,6 @@ public class SelectUserActivity extends AppCompatActivity {
         lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(SelectUserActivity.this, "1", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.putExtra("username", users.get(i).getUserName());
                 intent.putExtra("userId", users.get(i).getUserId());

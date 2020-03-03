@@ -55,6 +55,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
     private TextView tvFileName, tvUploadedFileName, tvGetterUserName;
     private ProgressDialog dialog;
     private String mes;
+    private String getterUserID = "0";
     private EditText edtMessageBox;
     private boolean file_exist = false;
 
@@ -140,7 +141,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     .addPathParameter("personnelCode", USER_ID)
                     .addPathParameter("messageString", edtMessageBox.getText().toString())
                     .addPathParameter("fileName", FILE_NAME)
-                    .addPathParameter("getterId", FILE_NAME)
+                    .addPathParameter("getterId", getterUserID)
                     .setTag(this)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -238,7 +239,6 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     return;
                 }
 
-
                 Uri selectedFileUri = data.getData();
                 selectedFilePath = FilePath.getPath(this, selectedFileUri);
                 Log.i(TAG, "Selected File Path:" + selectedFilePath);
@@ -249,7 +249,8 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(this, "خطا در آپلود فایل", Toast.LENGTH_SHORT).show();
                 }
             } else if (requestCode == USER_RESULT_CODE) {
-                String username = getIntent().getStringExtra("username") + getIntent().getStringExtra("userId");
+                String username = data.getStringExtra("username");
+                getterUserID = data.getStringExtra("userId");
                 tvGetterUserName.setText("ارسال پیام به : " + username);
                 btnSelectUser.setVisibility(View.GONE);
             }

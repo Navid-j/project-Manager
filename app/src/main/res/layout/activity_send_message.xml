@@ -25,11 +25,22 @@
         android:text="انتخاب کاربر"
         android:textColor="@color/red" />
 
+    <TextView
+        android:id="@+id/send_to_all_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_send_message_title"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="2dp"
+        android:background="#B8D3B8"
+        android:text="در صورت خالی بودن نام کاربری پیغام بصورت عمومی منتشر خواهد شد."
+        android:textSize="11sp" />
+
     <EditText
         android:id="@+id/edt_send_message_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_send_message_title"
+        android:layout_below="@id/send_to_all_message"
         android:layout_margin="6dp"
         android:background="#E2DFDF"
         android:gravity="top"
