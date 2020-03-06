@@ -11,12 +11,13 @@
     android:fadeScrollbars="true"
     android:fadingEdge="vertical"
     android:fadingEdgeLength="50dp"
-    android:focusable="true"
     android:layoutDirection="rtl"
     android:outlineAmbientShadowColor="@color/cardview_dark_background"
     android:outlineSpotShadowColor="@color/cardview_dark_background"
     android:requiresFadingEdge="vertical"
     app:cardCornerRadius="10dp"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 

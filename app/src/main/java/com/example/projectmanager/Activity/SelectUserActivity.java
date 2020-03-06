@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
+import static com.example.projectmanager.Activity.LoginActivity.USER_LEVEL;
 
 public class SelectUserActivity extends AppCompatActivity {
 
@@ -62,7 +63,12 @@ public class SelectUserActivity extends AppCompatActivity {
     }
 
     private void GetUsers() {
-        String link = "mitra/UserList.php";
+        String link;
+        if (USER_LEVEL.equals("0"))
+            link = "mitra/UserList.php?level=1";
+        else
+            link = "mitra/UserList.php";
+
         AndroidNetworking.get(HOST_NAME + link)
                 .setTag(this)
                 .setPriority(Priority.LOW)

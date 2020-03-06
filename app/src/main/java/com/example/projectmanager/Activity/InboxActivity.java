@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -18,10 +17,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.example.projectmanager.Adapter.HomeRvAdapter;
 import com.example.projectmanager.Adapter.InboxRvAdapter;
 import com.example.projectmanager.Model.Messages;
-import com.example.projectmanager.Model.Projects;
 import com.example.projectmanager.R;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
@@ -31,23 +28,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
 import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
-import static com.example.projectmanager.Activity.LoginActivity.USER_LEVEL;
 
 public class InboxActivity extends AppCompatActivity {
 
     Intent intent;
-    ImageView backIcon;
+    ImageView backgroundIcon;
     int w, h;
     private int exit;
     private RecyclerView rvInbox;
     private ArrayList<Messages> messagesList = new ArrayList<>();
     private String TAG = "InboxActivity";
+    private String link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +54,13 @@ public class InboxActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_inbox);
 
         w = getWindowManager().getDefaultDisplay().getWidth();
         h = getWindowManager().getDefaultDisplay().getHeight();
 
-        backIcon = findViewById(R.id.backgrand_icon);
+        backgroundIcon = findViewById(R.id.backgrand_icon);
         rvInbox = findViewById(R.id.inbox_rv);
 
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
@@ -73,7 +70,8 @@ public class InboxActivity extends AppCompatActivity {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w / 2, (int) (h / 1.5));
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        backIcon.setLayoutParams(params);
+        backgroundIcon.setLayoutParams(params);
+
 
         spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
@@ -105,8 +103,12 @@ public class InboxActivity extends AppCompatActivity {
         rvInbox.setLayoutManager(new LinearLayoutManager(InboxActivity.this, RecyclerView.VERTICAL, false));
 
 
-        String link = "mitra/GetMessageList.php?getter_id=" + "0";
+        link = "mitra/GetMessageList.php?getter_id=" + USER_ID;
 
+    }
+
+    private void getData(String link) {
+        messagesList.clear();
         AndroidNetworking.get(HOST_NAME + link)
                 .setTag(this)
                 .setPriority(Priority.LOW)
@@ -118,7 +120,6 @@ public class InboxActivity extends AppCompatActivity {
                         try {
                             JSONArray fullMessages = response.getJSONArray("messages");
                             JSONObject message;
-                            Date date = new Date();
                             for (int i = 0; i < fullMessages.length(); i++) {
                                 message = fullMessages.getJSONObject(i);
                                 Log.d(TAG, "onResponse: " + message);
@@ -171,5 +172,12 @@ public class InboxActivity extends AppCompatActivity {
                 }
             }, 2500);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        messagesList.clear();
+        getData(link);
     }
 }

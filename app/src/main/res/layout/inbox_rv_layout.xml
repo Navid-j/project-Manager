@@ -12,18 +12,17 @@
     android:fadeScrollbars="true"
     android:fadingEdge="vertical"
     android:fadingEdgeLength="50dp"
-    android:focusable="true"
     android:layoutDirection="rtl"
-    android:outlineAmbientShadowColor="@color/cardview_dark_background"
-    android:outlineSpotShadowColor="@color/cardview_dark_background"
     android:requiresFadingEdge="vertical"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/inbox_cardview_background_style">
 
         <TextView

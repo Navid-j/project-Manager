@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.SelectUserActivity"></activity>
+        <activity android:name=".Activity.ProfileActivity" android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity android:name=".Activity.SelectUserActivity" />
         <activity android:name=".Activity.ViewMessageActivity" />
         <activity android:name=".Activity.SendMessageActivity" />
         <activity android:name=".Activity.SignupActivity" />

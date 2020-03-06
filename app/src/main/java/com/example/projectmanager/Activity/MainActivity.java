@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
 
         w = getWindowManager().getDefaultDisplay().getWidth();
@@ -206,6 +207,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemReselected(int itemIndex, String itemName) {
 
+            }
+        });
+
+        profileCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("name", USER_NAME + " " + USER_FAMILY);
+                intent.putExtra("id", USER_ID);
+                startActivity(intent);
             }
         });
     }

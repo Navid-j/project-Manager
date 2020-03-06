@@ -62,9 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         USER_NAME = preferences.getString("USER_NAME", " ");
         USER_FAMILY = preferences.getString("USER_FAMILY", " ");
 
-        if (isLogin)
+        if (isLogin) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
+            finish();
+        }
 
         int w = displayMetrics.widthPixels;
         int h = displayMetrics.heightPixels;
@@ -105,11 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         params.topMargin = h / 40;
         loginLogo.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(w / 4, h / 10);
-        params.addRule(RelativeLayout.RIGHT_OF, R.id.login_cardview);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.topMargin = h / 40;
-        params.leftMargin = -w / 8;
+        params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, h / 12);
+        params.addRule(RelativeLayout.ALIGN_LEFT, R.id.login_cardview);
+        params.addRule(RelativeLayout.BELOW, R.id.login_cardview);
+        params.topMargin = h / 45;
         signUpBtn.setLayoutParams(params);
 
 
@@ -128,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void authentication() {
-
         progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get(HOST_NAME + "mitra/Login.php?personnelCode={code}&pass={password}")
                 .addPathParameter("code", usernameBox.getText().toString())

@@ -3,6 +3,7 @@ package com.example.projectmanager.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class InboxRvAdapter extends RecyclerView.Adapter<InboxRvAdapter.HomeRvViewHolder> {
 
-    private ArrayList<Messages> mProjects;
+    private ArrayList<Messages> mMessages;
 
     class HomeRvViewHolder extends RecyclerView.ViewHolder {
         private TextView mIntro;
@@ -44,9 +45,9 @@ public class InboxRvAdapter extends RecyclerView.Adapter<InboxRvAdapter.HomeRvVi
             w = displayMetrics.widthPixels;
             h = displayMetrics.heightPixels;
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    (int) (w / 1.1),
-                    h / 6);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h / 6);
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            params.setMargins(w / 15, 0, w / 15, 0);
             cardView.setLayoutParams(params);
 
             RelativeLayout.LayoutParams Rparams = new RelativeLayout.LayoutParams(
@@ -63,7 +64,7 @@ public class InboxRvAdapter extends RecyclerView.Adapter<InboxRvAdapter.HomeRvVi
     }
 
     public InboxRvAdapter(ArrayList<Messages> messages) {
-        mProjects = messages;
+        mMessages = messages;
     }
 
     @NonNull
@@ -76,18 +77,21 @@ public class InboxRvAdapter extends RecyclerView.Adapter<InboxRvAdapter.HomeRvVi
 
     @Override
     public void onBindViewHolder(@NonNull final HomeRvViewHolder holder, final int position) {
-        Messages messages = mProjects.get(position);
+        Messages messages = mMessages.get(position);
 
         holder.mIntro.setText(messages.getMessageIntro());
         holder.mProducer.setText(" " + messages.getProducerId() + " ");
-        holder.mAttach.setVisibility(View.VISIBLE);
+        if (mMessages.get(position).ismAttach().equals("null"))
+            holder.mAttach.setVisibility(View.GONE);
+        else
+            holder.mAttach.setVisibility(View.VISIBLE);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(holder.context, ViewMessageActivity.class);
-                intent.putExtra("messageId", mProjects.get(position).getID());
-                intent.putExtra("writerName", mProjects.get(position).getProducerId());
+                intent.putExtra("messageId", mMessages.get(position).getID());
+                intent.putExtra("writerName", mMessages.get(position).getProducerId());
                 holder.context.startActivity(intent);
             }
         });
@@ -96,7 +100,7 @@ public class InboxRvAdapter extends RecyclerView.Adapter<InboxRvAdapter.HomeRvVi
 
     @Override
     public int getItemCount() {
-        return mProjects.size();
+        return mMessages.size();
     }
 
 }

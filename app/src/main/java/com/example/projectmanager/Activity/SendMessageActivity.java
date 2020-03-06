@@ -43,6 +43,7 @@ import java.net.URL;
 
 import static com.example.projectmanager.Activity.LoginActivity.HOST_NAME;
 import static com.example.projectmanager.Activity.LoginActivity.USER_ID;
+import static com.example.projectmanager.Activity.LoginActivity.USER_LEVEL;
 
 public class SendMessageActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int PICK_FILE_REQUEST = 1;
@@ -78,13 +79,22 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
         btnSelectUser = findViewById(R.id.btn_message_user_select);
         tvGetterUserName = findViewById(R.id.tv_send_message_title);
 
+        if (getIntent().hasExtra("getterId")) {
+            getterUserID = getIntent().getStringExtra("getterId");
+            tvGetterUserName.setText("ارسال پیام به : " + getterUserID);
+            btnSelectUser.setVisibility(View.GONE);
+        }
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (edtMessageBox.getText().length() < 2)
                     Toast.makeText(SendMessageActivity.this, "لطفا متن پیام را وارد کنید!", Toast.LENGTH_SHORT).show();
                 else {
-                    SendMessage();
+                    if (USER_LEVEL.equals("0") & getterUserID.equals("0"))
+                        Toast.makeText(SendMessageActivity.this, "شما قادر به ارسال پیام عمومی نیستید لطفا یکی از مدیران را انتخاب کنید", Toast.LENGTH_LONG).show();
+                    else
+                        SendMessage();
                 }
             }
         });
@@ -166,9 +176,11 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
         } else {
-            AndroidNetworking.get(HOST_NAME + "mitra/AddMessage.php?userID={personnelCode}&message={messageString}")
+            AndroidNetworking.get(HOST_NAME + "mitra/AddMessage.php?userID={personnelCode}&message={messageString}" +
+                    "&getterID={getterId}")
                     .addPathParameter("personnelCode", USER_ID)
                     .addPathParameter("messageString", edtMessageBox.getText().toString())
+                    .addPathParameter("getterId", getterUserID)
                     .setTag(this)
                     .setPriority(Priority.MEDIUM)
                     .build()

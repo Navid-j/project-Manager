@@ -44,11 +44,18 @@ public class SignupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtVerifyPassword.getText().toString().equals(edtPassword.getText().toString())) {
-                    signUpUser(edtVerifyPassword.getText().toString());
-                } else
-                    Toast.makeText(SignupActivity.this, "Passwords Don't Match", Toast.LENGTH_SHORT).show();
+                if (edtName.getText().length() == 0 | edtFamily.getText().length() == 0 | edtPersonnelCode.getText().length() == 0
+                        | edtPhoneNumber.getText().length() == 0 && edtPassword.getText().length() == 0
+                        | edtVerifyPassword.getText().length() == 0) {
+                    Toast.makeText(SignupActivity.this, "لطفا اطلاعات را تکمیل کنید", Toast.LENGTH_SHORT).show();
 
+                } else {
+                    if (edtVerifyPassword.getText().toString().equals(edtPassword.getText().toString())) {
+                        signUpUser(edtVerifyPassword.getText().toString());
+                    } else
+                        Toast.makeText(SignupActivity.this, "Passwords Don't Match", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 

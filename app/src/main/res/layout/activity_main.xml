@@ -22,7 +22,10 @@
         android:layout_alignParentRight="true"
         app:cardCornerRadius="50dp"
         app:strokeColor="@color/black"
-        app:strokeWidth="1dp">
+        app:strokeWidth="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="match_parent"
